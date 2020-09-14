@@ -7,13 +7,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import wave
 from playsound import playsound as ps
-import sys
 
 # Open the wave file to read from
 audio = wave.open("EE321audio.wav", "r")
 
 # Play the original audio as a test
-ps("EE321audio.wav")
+#ps("EE321audio.wav")
 
 # Print out some basic information about our original audio file
 print("\n//////////////////Info for original audio file//////////////////")
@@ -60,8 +59,10 @@ zerosarray5sec = bytearray(BYTESINASEC*5)
 signalOut0 = zerosarray1sec + signalarray
 signalOut0Bytes = bytes(signalOut0)
 audioOut0.writeframes(signalOut0)
+
 signalOut1 = zerosarray3sec + signalarray
 audioOut1.writeframes(signalOut1)
+
 signalOut2 = zerosarray5sec + signalarray
 audioOut2.writeframes(signalOut2)
 
@@ -82,7 +83,10 @@ plt.show()
 # Graph of 1st delayed audio
 plt.figure(2)
 plt.title("Audio with 1s delay")
-plt.plot(map(float, signalOut0Bytes.split(',')))
+
+testMap = map(float, signalOut0Bytes.split(','))
+
+plt.plot(testMap)
 plt.show()
 
 
