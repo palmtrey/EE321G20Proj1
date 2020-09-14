@@ -22,19 +22,32 @@ print("Sample width: " + str(audio.getsampwidth()) + " bytes, or " + str(audio.g
 print("////////////////////////////////////////////////////////////////\n")
 
 # Open the wave file we'll create to store the original audio file converted to mono
-audioMono = wave.open("audioMono.wav", "w")
+audioOut = wave.open("audioOut.wav", "w")
+audioOut.setnchannels(2)
+audioOut.setsampwidth(2)
+audioOut.setframerate(44100)
 
 # Play the original audio as a test
 ps("EE321audio.wav")
 
 # Get the raw audio from the wave file
 signal = audio.readframes(-1)
+
 signal = np.fromstring(signal, "Int16")
 framerate = audio.getframerate()
 
-#if spf.getnchannels() == 2:
-   # print("Just mono files")
-   # sys.exit(0)
+
+
+signalarray = bytearray(signal)
+zerosarray = bytearray(441000)
+
+signalarray[0:0] = zerosarray
+
+#print(signalarray)
+
+
+# Write out the new audio
+audioOut.writeframes(signalarray)
 
 Time = np.linspace(0, len(signal)/framerate, num=len(signal))
 
