@@ -108,7 +108,7 @@ plt.show()
 plt.figure(4)
 plt.title("Audio with 5s delay")
 plt.plot(Time2/NUMCHANNELS, signalOut2/NUMCHANNELS)
-plt.show()a
+plt.show()
 
 
 
