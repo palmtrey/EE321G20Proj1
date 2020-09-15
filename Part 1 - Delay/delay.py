@@ -6,15 +6,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import wave
-from playsound import playsound as ps
-import sys
 
-#print(sys.byteorder)
 # Open the wave file to read from
 audio = wave.open("EE321audio.wav", "r")
-
-# Play the original audio as a test
-#ps("EE321audio.wav")
 
 # Print out some basic information about our original audio file
 print("\n//////////////////Info for original audio file//////////////////")
@@ -41,19 +35,18 @@ audioOut2.setnchannels(2)
 audioOut2.setsampwidth(2)
 audioOut2.setframerate(44100)
 
-# Define a constant to use when implementing delays, in bytes/sec
+# Defining some constants to use for processing the audio
 SAMPLERATE = audio.getframerate()
 SAMPLEWIDTH = audio.getsampwidth()
 NUMCHANNELS = audio.getnchannels()
-BYTESINASEC =  SAMPLERATE * SAMPLEWIDTH * NUMCHANNELS
+BYTESINASEC = SAMPLERATE * SAMPLEWIDTH * NUMCHANNELS
 print(BYTESINASEC)
-
 
 # Get the raw audio from the wave file and convert it to an ndarray
 signal = audio.readframes(-1)
 signal = np.frombuffer(signal, "Int16", -1)
 
-# Convert the ndarray into a bytearray so we can add a delay in the front of it
+# Convert the variable signalarray of type bytes into a bytearray so we can add a delay in the front of it
 signalarray = bytearray(signal)
 
 # Create the delays of type bytearray
@@ -74,13 +67,10 @@ signalOut2 = zerosarray5sec + signalarray
 signalOut2 = np.frombuffer(signalOut2, "Int16", -1)
 audioOut2.writeframes(signalOut2)
 
-#audioIn0 = wave.open("delay1.wav", 'r')
-#signalIn0 = audioIn0.readframes(-1)
-#signalIn0 = np.frombuffer(signalIn0, "Int")
+
 ## Graphs
 
-#print(signalOut0)
-# The time variable for the horizontal axis of the original audio
+# The time variables for the horizontal axis of the audios
 Time = np.linspace(0, len(signal)/SAMPLERATE, num=len(signal))
 Time0 = np.linspace(0, len(signalOut0)/SAMPLERATE, num=len(signalOut0))
 Time1 = np.linspace(0, len(signalOut1)/SAMPLERATE, num=len(signalOut1))
@@ -109,6 +99,3 @@ plt.figure(4)
 plt.title("Audio with 5s delay")
 plt.plot(Time2/NUMCHANNELS, signalOut2/NUMCHANNELS)
 plt.show()
-
-
-
