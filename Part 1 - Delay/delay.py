@@ -8,15 +8,22 @@ import numpy as np
 import wave
 
 # Open the wave file to read from
-audio = wave.open("EE321audio.wav", "r")
+audio = wave.open("originalAudio.wav", "r")
+
+# Defining some constants to use for processing the audio
+SAMPLERATE = audio.getframerate()
+SAMPLEWIDTH = audio.getsampwidth()
+TOTALFRAMES = audio.getnframes()
+NUMCHANNELS = audio.getnchannels()
+BYTESINASEC = SAMPLERATE * SAMPLEWIDTH * NUMCHANNELS
 
 # Print out some basic information about our original audio file
 print("\n//////////////////Info for original audio file//////////////////")
-print("Number of channels (1 for mono, 2 for stereo): " + str(audio.getnchannels()))
-print("Sample rate: " + str(audio.getframerate()))
-print("Total number of frames: " + str(audio.getnframes()))
-print("Length: " + str(round(audio.getnframes()/audio.getframerate(), 2)) + "s")
-print("Sample width: " + str(audio.getsampwidth()) + " bytes, or " + str(audio.getsampwidth()*8) + " bits")
+print("Number of channels (1 for mono, 2 for stereo): " + str(NUMCHANNELS))
+print("Sample rate: " + str(SAMPLERATE))
+print("Total number of frames: " + str(TOTALFRAMES))
+print("Length: " + str(round(TOTALFRAMES/SAMPLERATE, 2)) + "s")
+print("Sample width: " + str(SAMPLEWIDTH) + " bytes, or " + str(SAMPLEWIDTH*8) + " bits")
 print("////////////////////////////////////////////////////////////////\n")
 
 # Open the wave files we'll create to store the original audio file with different delays
@@ -35,12 +42,7 @@ audioOut2.setnchannels(2)
 audioOut2.setsampwidth(2)
 audioOut2.setframerate(44100)
 
-# Defining some constants to use for processing the audio
-SAMPLERATE = audio.getframerate()
-SAMPLEWIDTH = audio.getsampwidth()
-NUMCHANNELS = audio.getnchannels()
-BYTESINASEC = SAMPLERATE * SAMPLEWIDTH * NUMCHANNELS
-print(BYTESINASEC)
+
 
 # Get the raw audio from the wave file and convert it to an ndarray
 signal = audio.readframes(-1)
@@ -80,22 +82,30 @@ Time2 = np.linspace(0, len(signalOut2)/SAMPLERATE, num=len(signalOut2))
 plt.figure(1)
 plt.title("Original Audio")
 plt.plot(Time/NUMCHANNELS, signal/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
 
 # Graph of 1st delayed audio
 plt.figure(2)
 plt.title("Audio with 1s delay")
 plt.plot(Time0/NUMCHANNELS, signalOut0/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
 
 # Graph of 2nd delayed audio
 plt.figure(3)
 plt.title("Audio with 3s delay")
 plt.plot(Time1/NUMCHANNELS, signalOut1/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
 
 # Graph of 3rd delayed audio
 plt.figure(4)
 plt.title("Audio with 5s delay")
 plt.plot(Time2/NUMCHANNELS, signalOut2/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
