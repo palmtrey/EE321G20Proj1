@@ -3,7 +3,7 @@ import numpy as np
 import wave
 from playsound import playsound as ps
 
-audio = wave.open("delay3.wav")
+audio = wave.open("delay1.wav")
 
 # Print out some basic information about the audio file
 print("\n//////////////////Info for original audio file//////////////////")
