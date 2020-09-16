@@ -26,18 +26,18 @@ print("Length: " + str(round(TOTALFRAMES/SAMPLERATE, 2)) + "s")
 print("Sample width: " + str(SAMPLEWIDTH) + " bytes, or " + str(SAMPLEWIDTH*8) + " bits")
 print("////////////////////////////////////////////////////////////////\n")
 
-# Open the wave files we'll create to store the original audio file with different echoes
-audioOut0 = wave.open("echo0.wav", "w")
+# Open the wave files we'll create to store the original audio file with different reverberations
+audioOut0 = wave.open("reverb0.wav", "w")
 audioOut0.setnchannels(2)
 audioOut0.setsampwidth(2)
 audioOut0.setframerate(44100)
 
-audioOut1 = wave.open("echo1.wav", "w")
+audioOut1 = wave.open("reverb1.wav", "w")
 audioOut1.setnchannels(2)
 audioOut1.setsampwidth(2)
 audioOut1.setframerate(44100)
 
-audioOut2 = wave.open("echo2.wav", "w")
+audioOut2 = wave.open("reverb2.wav", "w")
 audioOut2.setnchannels(2)
 audioOut2.setsampwidth(2)
 audioOut2.setframerate(44100)
@@ -67,26 +67,19 @@ echo1 = echo1.astype(np.int16)
 echo2 = np.round(np.frombuffer(signalOut, np.int16, -1)*0.5)
 echo2 = echo2.astype(np.int16)
 
-# Creating the first audio file with echoes (1 echo)
-audioOut0.writeframes(signalOut)
-audioOut0.writeframes(zerosarray1sec)
-audioOut0.writeframes(echo0)
+print(signalOut[len(signalOut)-50000-1:-1].shape)
+print(echo0[0:50000].shape)
 
-# Creating the second audio file with echoes (2 echoes)
-audioOut1.writeframes(signalOut)
-audioOut1.writeframes(zerosarray1sec)
-audioOut1.writeframes(echo0)
-audioOut1.writeframes(zerosarray1sec)
-audioOut1.writeframes(echo1)
 
-# Creating the third audio file with echoes (3 echoes)
-audioOut2.writeframes(signalOut)
-audioOut2.writeframes(zerosarray1sec)
-audioOut2.writeframes(echo0)
-audioOut2.writeframes(zerosarray1sec)
-audioOut2.writeframes(echo1)
-audioOut2.writeframes(zerosarray1sec)
-audioOut2.writeframes(echo2)
+# Creating the first audio file with reverberations (1 reverberation) #
+signalOut0 = np.add(signalOut[len(signalOut)-50000-1:-1], echo0[0:50000])
+signalOut0 = np.append(signalOut, echo0[50000:-1])
+
+audioOut0.writeframes(signalOut0)
+
+
+
+
 
 # Close all the audio streams
 audioOut0.close()
@@ -107,7 +100,7 @@ plt.ylabel("Value")
 plt.show()
 
 # Graph of first echo file (1 echo)
-audioGraph0 = wave.open("echo0.wav")
+audioGraph0 = wave.open("reverb0.wav")
 signalGraph0 = audioGraph0.readframes(-1)
 signalGraph0 = np.frombuffer(signalGraph0, np.int16, -1)
 
@@ -120,7 +113,7 @@ plt.ylabel("Value")
 plt.show()
 
 # Graph of second echo file (2 echoes)
-audioGraph1 = wave.open("echo1.wav")
+audioGraph1 = wave.open("reverb1.wav")
 signalGraph1 = audioGraph1.readframes(-1)
 signalGraph1 = np.frombuffer(signalGraph1, np.int16, -1)
 
@@ -133,7 +126,7 @@ plt.ylabel("Value")
 plt.show()
 
 # Graph of the third echo file (3 echoes)
-audioGraph2 = wave.open("echo2.wav")
+audioGraph2 = wave.open("reverb2.wav")
 signalGraph2 = audioGraph2.readframes(-1)
 signalGraph2 = np.frombuffer(signalGraph2, np.int16, -1)
 
