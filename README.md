@@ -2,7 +2,7 @@
 
 The source code, audio files, and graphs for Group 20 (Cameron Palmer, Shawn Boyd, Siddesh Sood) of EE 321: Systems and Signal Processing, project 1 can be found in this github repository. 
 
-Directory & File help:
+Directory & File help: \n
 Part 1 - Delay contains code and audio files pertaining to the first part of the project.
 Part 2 - Echo contains code and audio files pertaining to the second part.
 Part 3 - Reverberation contains code and audio files pertaining to the third part.
