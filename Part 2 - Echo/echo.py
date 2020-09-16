@@ -93,10 +93,11 @@ audioOut1.close()
 audioOut2.close()
 ## Graphs
 
-# The time variables for the horizontal axis of the audios
-Time = np.linspace(0, len(signal)/SAMPLERATE, num=len(signal))
+
+
 
 # Graph of original audio
+Time = np.linspace(0, len(signal)/SAMPLERATE, num=len(signal))  # For horizontal axis
 plt.figure(1)
 plt.title("Original Audio")
 plt.plot(Time/NUMCHANNELS, signal/NUMCHANNELS)
@@ -109,19 +110,25 @@ audioGraph0 = wave.open("echo0.wav")
 signalGraph0 = audioGraph0.readframes(-1)
 signalGraph0 = np.frombuffer(signalGraph0, np.int16, -1)
 
+Time0 = np.linspace(0, len(signalGraph0)/SAMPLERATE, num=len(signalGraph0))  # For horizontal axis
 plt.figure(2)
 plt.title("Echo 1")
-plt.plot(signalGraph0/NUMCHANNELS)
+plt.plot(Time0/NUMCHANNELS, signalGraph0/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
 
 # Graph of second echo file (2 echoes)
 audioGraph1 = wave.open("echo1.wav")
 signalGraph1 = audioGraph1.readframes(-1)
-signalGraph1 = np.frombuffer(signalGraph0, np.int16, -1)
+signalGraph1 = np.frombuffer(signalGraph1, np.int16, -1)
 
+Time1 = np.linspace(0, len(signalGraph1)/SAMPLERATE, num=len(signalGraph1))  # For horizontal axis
 plt.figure(3)
 plt.title("Echo 2")
-plt.plot(signalGraph1/NUMCHANNELS)
+plt.plot(Time1/NUMCHANNELS, signalGraph1/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
 
 # Graph of the third echo file (3 echoes)
@@ -129,7 +136,10 @@ audioGraph2 = wave.open("echo2.wav")
 signalGraph2 = audioGraph2.readframes(-1)
 signalGraph2 = np.frombuffer(signalGraph2, np.int16, -1)
 
+Time2 = np.linspace(0, len(signalGraph2)/SAMPLERATE, num=len(signalGraph2))  # For horizontal axis
 plt.figure(4)
 plt.title("Echo 3")
-plt.plot(signalGraph2/NUMCHANNELS)
+plt.plot(Time2/NUMCHANNELS, signalGraph2/NUMCHANNELS)
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
 plt.show()
