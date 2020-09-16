@@ -45,31 +45,52 @@ audioOut2.setframerate(44100)
 
 # Get the raw audio from the wave file and convert it to an ndarray
 signal = audio.readframes(-1)
-signal = np.frombuffer(signal, "Int16", -1)
+signal = np.frombuffer(signal, np.int16, -1)
 
 # Create a variable signalarray of type bytearray. This now contains the original audio
 signalarray = bytearray(signal)
 
 # Create a one second delay to place between echoes
 zerosarray1sec = bytearray(BYTESINASEC)
-#print(signalarray)
+zerosarray1sec = np.frombuffer(zerosarray1sec, np.int16, -1)
 
-# Create some divisor bytearrays to create the echoes with
-echodivisor0 = [4] * len(signal)
+signalOut = np.frombuffer(signalarray, np.int16, -1)
 
-# Create some copies of the original audio with lower gain
-#echoinstanceint0 = [int(v) for v in signalarray.split()]
-#print(echoinstanceint0)
-echoinstance0 = signal / echodivisor0
-echoinstance0 = bytearray(echoinstance0)
+# Create some echoes of different amplitudes
+echo0 = np.round(np.frombuffer(signalOut, np.int16, -1)*0.9)
+echo0 = echo0.astype(np.int16)
 
-# Create our echoed audio
-signalOut0 = signalarray + zerosarray1sec
-signalOut0[-1:-1] = echoinstance0
-signalOut0 = np.frombuffer(signalOut0, "Int16", -1)
-audioOut0.writeframes(signalOut0)
+echo1 = np.round(np.frombuffer(signalOut, np.int16, -1)*0.75)
+echo1 = echo1.astype(np.int16)
 
+echo2 = np.round(np.frombuffer(signalOut, np.int16, -1)*0.5)
+echo2 = echo2.astype(np.int16)
 
+# Creating the first audio file with echoes (1 echo)
+audioOut0.writeframes(signalOut)
+audioOut0.writeframes(zerosarray1sec)
+audioOut0.writeframes(echo0)
+
+# Creating the second audio file with echoes (2 echoes)
+audioOut1.writeframes(signalOut)
+audioOut1.writeframes(zerosarray1sec)
+audioOut1.writeframes(echo0)
+audioOut1.writeframes(zerosarray1sec)
+audioOut1.writeframes(echo1)
+
+# Creating the third audio file with echoes (3 echoes)
+audioOut2.writeframes(signalOut)
+audioOut2.writeframes(zerosarray1sec)
+audioOut2.writeframes(echo0)
+audioOut2.writeframes(zerosarray1sec)
+audioOut2.writeframes(echo1)
+audioOut2.writeframes(zerosarray1sec)
+audioOut2.writeframes(echo2)
+
+# Close all the audio streams
+audioOut0.close()
+audioOut1.close()
+audioOut2.close()
 ## Graphs
 
 # The time variables for the horizontal axis of the audios
@@ -83,7 +104,32 @@ plt.xlabel("Time (s)")
 plt.ylabel("Value")
 plt.show()
 
+# Graph of first echo file (1 echo)
+audioGraph0 = wave.open("echo0.wav")
+signalGraph0 = audioGraph0.readframes(-1)
+signalGraph0 = np.frombuffer(signalGraph0, np.int16, -1)
+
 plt.figure(2)
 plt.title("Echo 1")
-plt.plot(np.frombuffer(signalarray, "Int16", -1))
+plt.plot(signalGraph0/NUMCHANNELS)
+plt.show()
+
+# Graph of second echo file (2 echoes)
+audioGraph1 = wave.open("echo1.wav")
+signalGraph1 = audioGraph1.readframes(-1)
+signalGraph1 = np.frombuffer(signalGraph0, np.int16, -1)
+
+plt.figure(3)
+plt.title("Echo 2")
+plt.plot(signalGraph1/NUMCHANNELS)
+plt.show()
+
+# Graph of the third echo file (3 echoes)
+audioGraph2 = wave.open("echo2.wav")
+signalGraph2 = audioGraph2.readframes(-1)
+signalGraph2 = np.frombuffer(signalGraph2, np.int16, -1)
+
+plt.figure(4)
+plt.title("Echo 3")
+plt.plot(signalGraph2/NUMCHANNELS)
 plt.show()
