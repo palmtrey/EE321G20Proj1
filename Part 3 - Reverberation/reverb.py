@@ -65,7 +65,7 @@ echo2 = echo2.astype(np.int16)
 # Create a constant to standardize how much the reverberations overlap
 AMOUNTTOREVERB = 100000
 
-# Creating the first audio file with reverberations (1 reverberation) #
+# Creating the first audio file with reverberations (1 reverberation)
 signalOut0 = signalOut[0:len(signalOut)-AMOUNTTOREVERB-1]  # Create the non-overlapped part of the signal
 signalOut0 = np.append(signalOut0, np.add(signalOut[len(signalOut)-AMOUNTTOREVERB-1:-1], echo0[0:AMOUNTTOREVERB]))  # Add in the overlapped part of the signal
 signalOut0 = np.append(signalOut0, echo0[AMOUNTTOREVERB:-1])  # Finish with the non-overlapped end of the echo
@@ -74,7 +74,7 @@ audioOut0.writeframes(signalOut0)
 
 # Creating the second audio file with reverberations (2 reverberations)
 signalOut1 = signalOut0[0:len(signalOut0)-AMOUNTTOREVERB-1]  # Start with the previous reverberated signal
-signalOut1 = np.append(signalOut1, np.add(signalOut0[len(signalOut0)-AMOUNTTOREVERB-1:-1], echo1[0:AMOUNTTOREVERB]))
+signalOut1 = np.append(signalOut1, np.add(signalOut0[len(signalOut0)-AMOUNTTOREVERB-1:-1], echo1[0:AMOUNTTOREVERB])) # Perform the same process as above
 signalOut1 = np.append(signalOut1, echo1[AMOUNTTOREVERB:-1])
 
 audioOut1.writeframes(signalOut1)
@@ -100,7 +100,7 @@ plt.plot(Time/NUMCHANNELS, signal/NUMCHANNELS)
 plt.xlabel("Time (s)")
 plt.ylabel("Value")
 
-# Graph of first echo file (1 echo)
+# Graph of first reverb file (1 reverb)
 audioGraph0 = wave.open("reverb0.wav")
 signalGraph0 = audioGraph0.readframes(-1)
 signalGraph0 = np.frombuffer(signalGraph0, np.int16, -1)
@@ -112,7 +112,7 @@ plt.plot(Time0/NUMCHANNELS, signalGraph0/NUMCHANNELS)
 plt.xlabel("Time (s)")
 plt.ylabel("Value")
 
-# Graph of second echo file (2 echoes)
+# Graph of second reverb file (2 reverbs)
 audioGraph1 = wave.open("reverb1.wav")
 signalGraph1 = audioGraph1.readframes(-1)
 signalGraph1 = np.frombuffer(signalGraph1, np.int16, -1)
@@ -124,7 +124,7 @@ plt.plot(Time1/NUMCHANNELS, signalGraph1/NUMCHANNELS)
 plt.xlabel("Time (s)")
 plt.ylabel("Value")
 
-# Graph of the third echo file (3 echoes)
+# Graph of the third reverb file (3 reverbs)
 audioGraph2 = wave.open("reverb2.wav")
 signalGraph2 = audioGraph2.readframes(-1)
 signalGraph2 = np.frombuffer(signalGraph2, np.int16, -1)
