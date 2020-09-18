@@ -92,10 +92,9 @@ audioOut2.writeframes(echo2)
 audioOut0.close()
 audioOut1.close()
 audioOut2.close()
+
+
 ## Graphs
-
-
-
 
 # Graph of original audio
 Time = np.linspace(0, len(signal)/SAMPLERATE, num=len(signal))  # For horizontal axis
